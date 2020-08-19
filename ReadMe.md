@@ -1,4 +1,4 @@
-This folder contains the final version of the **Minimum Angle Clustering (MAC)** algorithm, and all previous development versions. We also include some experimental cluster analysis on one real data and one synthetic data, in which several clustering algorithms are applied and compared. 
+This folder contains the code for the **Minimum Angle Clustering (MAC)** subspace clustering algorithm. We also include the US Amazon web-scraped data using TF-IDF representation, and the code to run the real data experiment using MAC. 
 
 Please kindly cite our [paper](https://ieeexplore.ieee.org/abstract/document/8622472) if you find the code helpful for your research.
 
