@@ -9,7 +9,7 @@ function [theta, diff, dmax] = PA_calc(F, G, prop)
 % prop: the proportion of variability in the data to be expalained
 % maximally by the PCs.
 
-% Last updated: 1 Oct 2019
+% Last updated: 23rd Aug. 2020
 
 
 %% F-related quantities
@@ -17,7 +17,7 @@ if size(F,1) == 1
     Qf=F';
     df = size(Qf,2);
 else
-    [U1 S1 V1] = svd(F','econ'); % U1 contains the eigenvectors
+    [U1, S1, V1] = svd(F','econ'); % U1 contains the eigenvectors
     vals1 = diag(S1).^2;
     k1 = sum(cumsum(vals1)/sum(vals1)<=prop); 
     if k1==0
@@ -34,7 +34,7 @@ if size(G,1)==1
     Qg=G';
     dg = size(Qg,2);
 else
-    [U2 S2 V2] = svd(G','econ'); % U1 contains the eigenvectors
+    [U2, S2, V2] = svd(G', 'econ'); % U1 contains the eigenvectors
     vals2 = diag(S2*S2');
     k2 = sum(cumsum(vals2)/sum(vals2)<=prop); 
     if k2==0
@@ -57,7 +57,7 @@ if dg > df
 end
 
 %% reduced SVD  
-[Y S Z] = svd(Qf'*Qg, 'econ');
+[Y, S, Z] = svd(Qf'*Qg, 'econ');
 
 %% final step
 theta = acos(diag(S));

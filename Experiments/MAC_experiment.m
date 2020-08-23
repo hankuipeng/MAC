@@ -20,8 +20,9 @@ K = length(unique(Truth));
 %% MAC
 tic
 grps_mac = MAC(X, K);
-cluster_performance(grps_mac, Truth)
 time_mac = toc;
+
+cluster_performance(grps_mac, Truth)
 
 
 %% save the results 

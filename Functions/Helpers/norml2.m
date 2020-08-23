@@ -1,6 +1,6 @@
 % This function normalize the row/column of a matrix to have unit length
 
-function y = norml2(x,ind)
+function y = norml2(x, ind)
 
 if ind == 1 % normalize each row in 'before' 
     x = x';

@@ -1,6 +1,6 @@
-% Last updated: 1 Oct 2019
+% Last updated: 23rd Aug. 2020
 
-function Dfull = PA_dis(submat, P, pct)
+function Dfull = PA_dis(submat, pct)
 
 Ns = length(submat);
 D = zeros(Ns);
@@ -11,7 +11,7 @@ for ll = 1:(Ns-1)
         F = norml2(submat{ll}, 1);
         G = norml2(submat{rr}, 1);
         
-        [theta diff dmax] = PA_calc(F,G,pct);
+        [theta, diff, dmax] = PA_calc(F, G, pct);
         D(ll,rr) = (sum(1.-cos(theta))+diff)/dmax;
     end
 end

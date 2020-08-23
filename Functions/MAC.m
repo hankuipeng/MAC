@@ -6,17 +6,17 @@
 % thres: the tolerance parameter in RREF
 % normalise: 1 or 0, depending on whether to normalise the data or not.
 
-% Last updated: 19th Aug. 2020
+% Last updated: 23rd Aug. 2020
 
 
-function finlabels = MAC(X, K, prop, thres, normalise)
+function finlabels = MAC(X, K, thres, prop, normalise)
 
-if nargin < 3 || isempty(prop)
-    prop = 0.8;
+if nargin < 3
+    thres = 1e-4;
 end
 
-if nargin < 4
-    thres = 0;
+if nargin < 4 || isempty(prop)
+    prop = 0.8;
 end
 
 if nargin < 5
@@ -37,8 +37,10 @@ P = size(X, 2);
 
 
 %% Obtain the Reduced Row Echelon Form (RREF)
-Xrref = rref(X');
-Xrref = decimal(Xrref, 4); % keep the precision up to 4 decimal points
+[Q, R] = qr(X');
+Xrref0 = rref(R);
+Xrref1 = norml2(Xrref0, 2);
+Xrref = denoise_c(Xrref1, thres);
 
 
 %% assign those data objects that are connected through RREF together 
@@ -46,27 +48,27 @@ Adj = zeros(N,N);
 
 for i = 1:(N-1)
     for j = (i+1):N
-        if Xrref(:,i)'*Xrref(:,j) ~= thres
+        if Xrref(:,i)'*Xrref(:,j) > 0
             Adj(i,j) = 1;
         end
     end
 end
 
 Adjacency = Adj + Adj';
- 
+
 comp = conncomp(graph(Adjacency), 'OutputForm', 'cell');
 
 
 %% create one sub-matrix for each current cluster
 submat = {};
 
-for kk = 1:size(comp,2)
+for kk = 1:size(comp, 2)
     submat{kk} = X(comp{kk},:);
 end
 
 
 %% Part 3: create a matrix of dissimilarities
-Dfull = PA_dis(submat, P, prop);
+Dfull = PA_dis(submat, prop);
 groups = SC_Jordan(Dfull, K);
 
 
